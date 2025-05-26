@@ -1,0 +1,26 @@
+# === Java Compiled Files ===
+*.class
+*.jar
+*.war
+*.ear
+
+# === Build / Output Directories ===
+out/
+bin/
+build/
+target/
+
+# === Logs and temp files ===
+*.log
+*.tmp
+*.swp
+*.swo
+hs_err_pid*
+replay_pid*
+
+# === VS Code Settings ===
+.vscode/
+
+# === OS-specific files ===
+.DS_Store       # macOS
+Thumbs.db       # Windows
