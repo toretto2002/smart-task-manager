@@ -1,3 +1,7 @@
+package controller;
+
+import model.Task;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
