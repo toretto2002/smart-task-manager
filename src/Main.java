@@ -61,19 +61,13 @@ public class Main {
 
     private static void createTask() {
 
-        System.out.print("Inserisci il titolo del Task: ");
-        String title = scanner.nextLine();
+        String title = readValidString("Inserisci il titolo del Task: ");
 
-        System.out.print("Inserisci la descrizione del Task: ");
-        String description = scanner.nextLine();
+        String description = readValidString("Inserisci la descrizione del Task: ");
 
-        System.out.print("Inserisci la data di scadenza (YYYY-MM-DD): ");
-        String dueDateStr = scanner.nextLine();
-        LocalDate dueDate = LocalDate.parse(dueDateStr);
+        LocalDate dueDate = readValidDate("Inserisci la data di scadenza (YYYY-MM-DD): ");
 
-        System.out.print("Inserisci la priorità (LOW, MEDIUM, HIGH): ");
-        String priorityStr = scanner.nextLine().toUpperCase();
-        Priority priority = Priority.valueOf(priorityStr);
+        Priority priority = readValidPriority("Priorità (LOW, MEDIUM, HIGH): ");
 
         Task task = new TaskBuilder()
                 .setTitle(title)
@@ -107,9 +101,8 @@ public class Main {
 
     private static void addSubTaskToTask() {
         showAllTasksWithId();
-        System.out.print("Inserisci l'ID del Task a cui aggiungere un sotto-Task: ");
-        String taskIdStr = scanner.nextLine();
-        UUID taskId = UUID.fromString(taskIdStr);
+
+        UUID taskId = readValidUUID("Inserisci l'ID del Task a cui aggiungere un sotto-task: ");
 
         Task mainTask = taskManager.getTaskById(taskId).orElse(null);
         if (mainTask == null) {
@@ -117,17 +110,13 @@ public class Main {
             return;
         }
 
-        System.out.print("Titolo sotto-task: ");
-        String title = scanner.nextLine();
+        String title = readValidString("Titolo del sotto-task: ");
 
-        System.out.print("Descrizione: ");
-        String desc = scanner.nextLine();
+        String desc = readValidString("Descrizione: ");
 
-        System.out.print("Data scadenza (YYYY-MM-DD): ");
-        LocalDate date = LocalDate.parse(scanner.nextLine());
+        LocalDate date = readValidDate("Data di scadenza (YYYY-MM-DD): ");
 
-        System.out.print("Priorità (LOW, MEDIUM, HIGH): ");
-        Priority prio = Priority.valueOf(scanner.nextLine().toUpperCase());
+        Priority prio = readValidPriority("Priorità (LOW, MEDIUM, HIGH): ");
 
         SubTask sub = TaskFactory.createSubTask(title, desc, date, prio);
         mainTask.addSubTask(sub);
