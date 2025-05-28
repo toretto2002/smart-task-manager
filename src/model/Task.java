@@ -67,6 +67,18 @@ public class Task {
         return subTasks != null ? subTasks : new ArrayList<>();
     }
 
+    public boolean hasSubTasks() {
+        return !subTasks.isEmpty();
+    }
+
+    public void markOnlySelfAsDone() {
+        this.done = true;
+    }
+
+    public boolean areAllSubTasksDone() {
+        return subTasks.stream().allMatch(SubTask::isDone);
+    }
+
     @Override
     public String toString() {
         return "[" + priority + "] " + title + " (due: " + dueDate + ") - " + (done ? "DONE" : "TODO");

@@ -5,9 +5,6 @@ import java.util.logging.*;
 
 public class LoggerUtil {
 
-    private static final String LOG_FILE = "log/app.log";
-    private static final Level DEFAULT_LEVEL = Level.INFO;
-
     public static Logger getLogger(Class<?> cls) {
         Logger logger = Logger.getLogger(cls.getName());
 
@@ -22,7 +19,7 @@ public class LoggerUtil {
                 fileHandler.setFormatter(new SimpleFormatter());
 
                 logger.addHandler(fileHandler);
-                logger.setLevel(DEFAULT_LEVEL);
+                logger.setLevel(level);
                 logger.setUseParentHandlers(true); // stampa anche su console
 
             } catch (IOException | IllegalArgumentException e) {

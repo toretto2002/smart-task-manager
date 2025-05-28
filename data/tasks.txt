@@ -1,0 +1,2 @@
+TASK|ba639fdb-d9d6-4d53-ac65-af976df48b44|Nuovo task|Nuovo task|2030-07-08|HIGH|false
+SUBTASK|9efdb437-ec49-44fd-89c3-7af722f1c752|Sotto task|Sotto task|2030-07-08|HIGH|false

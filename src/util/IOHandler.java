@@ -84,16 +84,18 @@ public class IOHandler {
 
                     tasks.add(currentTask);
                 } else if (parts[0].equals("SUBTASK") && currentTask != null) {
-                    String title = parts[1];
-                    String description = parts[2];
-                    LocalDate dueDate = LocalDate.parse(parts[3]);
-                    Priority priority = Priority.valueOf(parts[4]);
-                    boolean isDone = Boolean.parseBoolean(parts[5]);
+                    UUID subId = UUID.fromString(parts[1]);
+                    String title = parts[2];
+                    String description = parts[3];
+                    LocalDate dueDate = LocalDate.parse(parts[4]);
+                    Priority priority = Priority.valueOf(parts[5]);
+                    boolean isDone = Boolean.parseBoolean(parts[6]);
 
                     SubTask subTask = new SubTask(title, description, dueDate, priority);
                     if (isDone) {
                         subTask.markAsDone();
                     }
+                    ReflectionHelper.setId(subTask, subId);
 
                     currentTask.addSubTask(subTask);
                 }
