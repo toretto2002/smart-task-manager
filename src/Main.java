@@ -14,6 +14,9 @@ import model.TaskFactory;
 import util.ConfigLoader;
 import util.IOHandler;
 import util.Validator;
+import util.export.CsvExporter;
+import util.export.TaskExporter;
+import util.export.TxtExporter;
 
 public class Main {
 
@@ -39,6 +42,8 @@ public class Main {
                 case "6" -> saveTasksToFile();
                 case "7" -> loadTasksFromFile();
                 case "8" -> markTaskOrSubTaskAsDone();
+                case "9" -> exportTasksAsTxt();
+                case "10" -> exportTasksAsCsv();
                 case "0" -> exit = true;
                 default -> System.out.println("Scelta non valida.");
             }
@@ -57,6 +62,8 @@ public class Main {
         System.out.println("6. Salva Task su file");
         System.out.println("7. Carica Task da file");
         System.out.println("8. Completa un Task o Sotto-task");
+        System.out.println("9. Esporta task in formato TXT");
+        System.out.println("10. Esporta task in formato CSV");
         System.out.println("0. Esci");
         System.out.print("Scelta: ");
     }
@@ -322,6 +329,20 @@ public class Main {
             input = scanner.nextLine();
         }
         return input;
+    }
+
+    private static void exportTasksAsTxt() {
+        String path = ConfigLoader.get("export.file.txt", "exports/export-txt.txt");
+        TaskExporter exporter = new TxtExporter();
+        exporter.export(taskManager.getAllTasks(), path);
+        System.out.println("Esportazione completata: " + path);
+    }
+
+    private static void exportTasksAsCsv() {
+        String path = ConfigLoader.get("export.file.csv", "exports/export-csv.csv");
+        TaskExporter exporter = new CsvExporter();
+        exporter.export(taskManager.getAllTasks(), path);
+        System.out.println("Task esportati in CSV in: " + path);
     }
 
 }

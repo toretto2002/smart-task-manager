@@ -1,0 +1,9 @@
+type,id,title,description,dueDate,priority,done
+TASK,e479bd60-0c31-4cc1-91d3-c05c823b067c,spero di non perdere nulla,spero di non perdere nulla,2040-06-09,LOW,false
+TASK,17db97cd-edf3-4fd0-a9bb-999e90f60528,Nuovo Task senza sottotask,NUovo task senza sottotask,2030-09-09,HIGH,false
+TASK,3a49d0d6-6d5d-478f-a5fa-471a59319b27,Task con 1 sottotask,task con un sotto task,2030-08-09,LOW,false
+SUBTASK,5bbd95bc-a85d-49cd-8fdb-1e3823198fd5,unico sottotask,unico sottotask,2030-09-08,LOW,false
+TASK,48dda136-9a97-4e47-872e-b5211e3a3f5a,task con molti sotto task,task con molti sottotask,2030-06-07,MEDIUM,true
+SUBTASK,fe4bc509-f51e-4a65-93b8-338f8c1aaa3f,primo sottotask,primo sottotask,2039-09-09,LOW,true
+SUBTASK,134d1ba6-efcf-4c58-bb36-cbb06e63978f,devo capire dove perdo la priority,devo capire dove perdo la priority,2040-08-09,LOW,true
+TASK,4e0f0195-0ea0-42c1-a3d8-44e86cd29526,task 1,task 1,2030-04-09,LOW,false

@@ -2,6 +2,7 @@ package test;
 
 import controller.TaskManager;
 import model.*;
+import util.ConfigLoader;
 import util.IOHandler;
 
 import org.junit.jupiter.api.*;
@@ -57,7 +58,7 @@ public class TaskManagerTest {
         SubTask sub = new SubTask("SubSaved", "Test inner", LocalDate.now(), Priority.LOW);
         task.addSubTask(sub);
 
-        String path = "test-output-tasks.txt";
+        String path = ConfigLoader.get("test.file", "test-output-tasks.txt");
         IOHandler.saveTasks(List.of(task), path);
         List<Task> loaded = IOHandler.loadTasks(path);
 
