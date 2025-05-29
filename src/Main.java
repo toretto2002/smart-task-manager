@@ -20,6 +20,8 @@ public class Main {
     private static final Scanner scanner = new Scanner(System.in);
     private static final TaskManager taskManager = TaskManager.getInstance();
 
+    private static boolean tasksLoaded = false;
+
     public static void main(String[] args) {
         boolean exit = false;
         System.out.println("Ciao utente benvenuto nel task manager perfetto per gestire i tuoi task quotidiani!");
@@ -85,12 +87,30 @@ public class Main {
     private static void loadTasksFromFile() {
         String path = ConfigLoader.get("task.file", "data/tasks.txt");
         List<Task> tasks = IOHandler.loadTasks(path);
-        taskManager.clearAllTasks();
-        taskManager.importTasks(tasks);
-        System.out.println("Task caricati con successo da file");
+        int importedCount = 0;
+
+        for (Task newTask : tasks) {
+            boolean alreadyExists = TaskManager.getInstance().getAllTasks().stream()
+                    .anyMatch(existing -> existing.getId().equals(newTask.getId()));
+            if (!alreadyExists) {
+                TaskManager.getInstance().addTask(newTask);
+                importedCount++;
+            }
+        }
+        tasksLoaded = true;
+        System.out.println("Task caricati con successo da fileTask aggiunti: " + importedCount);
     }
 
     private static void saveTasksToFile() {
+        if (!tasksLoaded) {
+            System.out.print("Non hai caricato i task da file. Vuoi sovrascrivere comunque? (s/N): ");
+            String input = scanner.nextLine().trim().toLowerCase();
+            if (!input.equals("s")) {
+                System.out.println("Operazione annullata.");
+                return;
+            }
+        }
+
         String path = ConfigLoader.get("task.file", "data/tasks.txt");
         if (taskManager.getAllTasks().isEmpty()) {
             System.out.println("Nessun task da salvare.");
@@ -100,7 +120,7 @@ public class Main {
     }
 
     private static void addSubTaskToTask() {
-        showAllTasksWithId();
+        showAllTasksWithId(true);
 
         UUID taskId = readValidUUID("Inserisci l'ID del Task a cui aggiungere un sotto-task: ");
 
@@ -119,6 +139,8 @@ public class Main {
         Priority prio = readValidPriority("Priorità (LOW, MEDIUM, HIGH): ");
 
         SubTask sub = TaskFactory.createSubTask(title, desc, date, prio);
+
+        System.out.println("Sotto-task creato: " + sub);
         mainTask.addSubTask(sub);
 
         System.out.println("Sotto-task aggiunto.");
@@ -159,8 +181,17 @@ public class Main {
     }
 
     private static void showAllTasksWithId() {
+        showAllTasksWithId(false); // chiama la versione avanzata con il valore default
+    }
+
+    private static void showAllTasksWithId(boolean filterIncomplete) {
         System.out.println("=== Elenco di tutti i Task con ID ===");
         List<Task> tasks = taskManager.getAllTasks();
+
+        if (filterIncomplete) {
+            tasks = tasks.stream().filter(t -> !t.isDone()).toList();
+        }
+
         if (tasks.isEmpty()) {
             System.out.println("Nessun task trovato.");
         } else {
@@ -188,7 +219,12 @@ public class Main {
     }
 
     private static void markTaskOrSubTaskAsDone() {
-        showAllTasks();
+        showAllTasksWithId(true); // mostra solo i task non completati
+
+        if (taskManager.getAllTasks().isEmpty()) {
+            return;
+        }
+
         System.out.print("Inserisci ID del task da completare: ");
         UUID id = UUID.fromString(scanner.nextLine());
 
@@ -219,8 +255,8 @@ public class Main {
             for (int i = 0; i < subs.size(); i++) {
                 System.out.println((i + 1) + ". " + subs.get(i));
             }
-            System.out.print("Quale sotto-task vuoi completare? (numero): ");
-            int index = Integer.parseInt(scanner.nextLine()) - 1;
+
+            int index = readValidIndex("Inserisci il numero del sotto-task da completare: ", subs.size());
 
             if (index >= 0 && index < subs.size()) {
                 subs.get(index).markAsDone();

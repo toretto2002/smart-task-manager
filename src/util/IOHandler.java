@@ -37,11 +37,12 @@ public class IOHandler {
                 writer.newLine();
 
                 for (SubTask subTask : task.getSubTasks()) {
-                    writer.write(String.format("SUBTASK|%s|%s|%s|%s|%s",
+                    writer.write(String.format("SUBTASK|%s|%s|%s|%s|%s|%s",
                             subTask.getId(),
                             subTask.getTitle(),
                             subTask.getDescription(),
                             subTask.getDueDate(),
+                            subTask.getPriority(),
                             subTask.isDone()));
                     writer.newLine();
                 }

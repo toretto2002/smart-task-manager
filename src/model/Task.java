@@ -50,7 +50,9 @@ public class Task {
 
     public void markAsDone() {
         this.done = true;
-
+        if (subTasks == null) {
+            return; // No sub-tasks to mark as done
+        }
         for (SubTask subTask : subTasks) {
             subTask.markAsDone();
         }
@@ -68,7 +70,7 @@ public class Task {
     }
 
     public boolean hasSubTasks() {
-        return !subTasks.isEmpty();
+        return subTasks != null && !subTasks.isEmpty();
     }
 
     public void markOnlySelfAsDone() {
