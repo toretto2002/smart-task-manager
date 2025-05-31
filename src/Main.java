@@ -11,8 +11,11 @@ import model.SubTask;
 import model.Task;
 import model.TaskBuilder;
 import model.TaskFactory;
+import observer.ConsoleNotifier;
+import observer.TaskObserver;
 import util.ConfigLoader;
 import util.IOHandler;
+import util.ReminderService;
 import util.Validator;
 import util.export.CsvExporter;
 import util.export.TaskExporter;
@@ -22,6 +25,10 @@ public class Main {
 
     private static final Scanner scanner = new Scanner(System.in);
     private static final TaskManager taskManager = TaskManager.getInstance();
+
+    private static final ConsoleNotifier notifier = new ConsoleNotifier();
+
+    private static final ReminderService reminderService = new ReminderService();
 
     private static boolean tasksLoaded = false;
 
@@ -44,6 +51,8 @@ public class Main {
                 case "8" -> markTaskOrSubTaskAsDone();
                 case "9" -> exportTasksAsTxt();
                 case "10" -> exportTasksAsCsv();
+                case "11" -> startReminder();
+                case "12" -> stopReminder();
                 case "0" -> exit = true;
                 default -> System.out.println("Scelta non valida.");
             }
@@ -64,6 +73,8 @@ public class Main {
         System.out.println("8. Completa un Task o Sotto-task");
         System.out.println("9. Esporta task in formato TXT");
         System.out.println("10. Esporta task in formato CSV");
+        System.out.println("11. Avvia promemoria automatico");
+        System.out.println("12. Ferma promemoria automatico");
         System.out.println("0. Esci");
         System.out.print("Scelta: ");
     }
@@ -85,6 +96,8 @@ public class Main {
                 .setPriority(priority)
                 .build();
 
+        task.addObserver(notifier); // Aggiungi l'osservatore al task
+
         taskManager.addTask(task);
         System.out.println("Task creato con successo!");
 
@@ -95,6 +108,7 @@ public class Main {
         String path = ConfigLoader.get("task.file", "data/tasks.txt");
         List<Task> tasks = IOHandler.loadTasks(path);
         int importedCount = 0;
+        attachObserversToTasks(tasks);
 
         for (Task newTask : tasks) {
             boolean alreadyExists = TaskManager.getInstance().getAllTasks().stream()
@@ -146,6 +160,7 @@ public class Main {
         Priority prio = readValidPriority("Priorità (LOW, MEDIUM, HIGH): ");
 
         SubTask sub = TaskFactory.createSubTask(title, desc, date, prio);
+        sub.addObserver(notifier); // Aggiungi l'osservatore al sotto-task
 
         System.out.println("Sotto-task creato: " + sub);
         mainTask.addSubTask(sub);
@@ -343,6 +358,25 @@ public class Main {
         TaskExporter exporter = new CsvExporter();
         exporter.export(taskManager.getAllTasks(), path);
         System.out.println("Task esportati in CSV in: " + path);
+    }
+
+    private static void attachObserversToTasks(List<Task> tasks) {
+        TaskObserver notifier = new ConsoleNotifier();
+        for (Task task : tasks) {
+            task.addObserver(notifier);
+            for (SubTask sub : task.getSubTasks()) {
+                sub.addObserver(notifier);
+            }
+        }
+    }
+
+    private static void startReminder() {
+        reminderService.start(15); // ogni 15 secondi
+    }
+
+    private static void stopReminder() {
+        reminderService.stop();
+        System.out.println("Servizio di promemoria fermato.");
     }
 
 }

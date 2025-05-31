@@ -1,8 +1,9 @@
+TASK|df07c24d-d871-4a91-bae6-dc73083735c3|creo task per chiuderlo e verificare notifica|creo task per chiuderlo e verificare notifica|2080-09-09|LOW|false
 TASK|e479bd60-0c31-4cc1-91d3-c05c823b067c|spero di non perdere nulla|spero di non perdere nulla|2040-06-09|LOW|false
 TASK|17db97cd-edf3-4fd0-a9bb-999e90f60528|Nuovo Task senza sottotask|NUovo task senza sottotask|2030-09-09|HIGH|false
 TASK|3a49d0d6-6d5d-478f-a5fa-471a59319b27|Task con 1 sottotask|task con un sotto task|2030-08-09|LOW|false
-SUBTASK|8412ee55-efd2-4aac-9f2a-a666b6f9b32d|unico sottotask|unico sottotask|2030-09-08|LOW|false
+SUBTASK|cc2a7c1f-b03e-44ad-a18e-fd4524bcf15d|unico sottotask|unico sottotask|2030-09-08|LOW|false
 TASK|48dda136-9a97-4e47-872e-b5211e3a3f5a|task con molti sotto task|task con molti sottotask|2030-06-07|MEDIUM|true
-SUBTASK|44e14cef-6430-470b-9cd7-e0ec63de30e0|primo sottotask|primo sottotask|2039-09-09|LOW|true
-SUBTASK|86f3ee33-dd6a-459d-b814-d64218230c5b|devo capire dove perdo la priority|devo capire dove perdo la priority|2040-08-09|LOW|true
+SUBTASK|621de2dc-28c6-4f39-848c-fa1ca129107b|primo sottotask|primo sottotask|2039-09-09|LOW|true
+SUBTASK|fc4c4c9f-c713-4699-8123-8371bab5684c|devo capire dove perdo la priority|devo capire dove perdo la priority|2040-08-09|LOW|true
 TASK|4e0f0195-0ea0-42c1-a3d8-44e86cd29526|task 1|task 1|2030-04-09|LOW|false

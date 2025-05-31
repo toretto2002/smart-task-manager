@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import observer.TaskObserver;
+
 public class Task {
 
     private UUID id;
@@ -14,6 +16,8 @@ public class Task {
     private Priority priority;
     private boolean done;
     private List<SubTask> subTasks;
+
+    private transient List<TaskObserver> observers = new ArrayList<>();
 
     public Task(String title, String description, LocalDate dueDate, Priority priority) {
         this.id = UUID.randomUUID();
@@ -51,11 +55,14 @@ public class Task {
     public void markAsDone() {
         this.done = true;
         if (subTasks == null) {
+            notifyObservers();
             return; // No sub-tasks to mark as done
         }
         for (SubTask subTask : subTasks) {
             subTask.markAsDone();
         }
+        notifyObservers();
+
     }
 
     public void addSubTask(SubTask subTask) {
@@ -84,6 +91,16 @@ public class Task {
     @Override
     public String toString() {
         return "[" + priority + "] " + title + " (due: " + dueDate + ") - " + (done ? "DONE" : "TODO");
+    }
+
+    public void addObserver(TaskObserver observer) {
+        observers.add(observer);
+    }
+
+    private void notifyObservers() {
+        for (TaskObserver observer : observers) {
+            observer.onTaskCompleted(this);
+        }
     }
 
 }
