@@ -11,7 +11,7 @@ import model.Task;
 
 public class ReminderService {
 
-    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+    private ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
     public void start(int intervalSeconds) {
         Runnable reminderTask = () -> {
